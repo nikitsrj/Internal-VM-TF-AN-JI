@@ -131,13 +131,15 @@ module "{{ vms['hostname'] }}" {
 {%      elif vms['operatingsystem'] == 'Linux' %}
   vmtemp            = "${var.linux_temp}"
  }
+ 
 resource "null_resource" "{{ vms['hostname'] }}" {
   depends_on = [module.{{ vms['hostname'] }}]
   provisioner "local-exec" {
-    command = "sleep 20 && ansible-playbook postprovisioning.yaml -i {{ vms['IPAddress'] }}, -e  'ansible_user=root ansible_password=${var.linux_temp_passwd} ansible_ssh_common_args=\"'\"-o StrictHostKeyChecking=no\"'\"' -vvv"
+    command = "ansible-playbook postprovisioning.yaml -i {{ vms['IPAddress'] }}, -e  'ansible_user=root ansible_password=${var.linux_temp_passwd} ansible_ssh_common_args=\"'\"-o StrictHostKeyChecking=no\"'\"' -vvv"
     interpreter = ["/bin/bash", "-c"]
   }
  }
+ 
 {% endif %}
 {% endfor %}
 
