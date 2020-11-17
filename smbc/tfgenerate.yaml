@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  vars_files:
+    - ./tfgenerate/vars/vmtfvars.yaml
+  roles:
+    - tfgenerate

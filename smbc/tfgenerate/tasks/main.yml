@@ -1,0 +1,6 @@
+---
+# tasks file for tfgenerate
+- name: generate the file
+  template:
+    src: main.tf.j2
+    dest: tfgenerate/files/main.tf

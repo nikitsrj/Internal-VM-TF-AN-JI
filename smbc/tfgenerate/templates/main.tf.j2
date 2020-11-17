@@ -1,0 +1,143 @@
+data "vsphere_datacenter" "dc" {
+  name = "KBT-DC"
+}
+{% for vms in server_details %}
+module "{{ vms['hostname'] }}" {
+  source                 = "../terraform-vsphere-vm"
+{%   if vms['environment'] == 'Production_WithCustData' and vms['storage'] == 'IBM' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'Production_WithCustData' and vms['storage'] == 'HITACHI' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'Production_NonCustData' and vms['storage'] == 'IBM' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'Production_NonCustData' and vms['storage'] == 'HITACHI' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'UAT' and vms['storage'] == 'IBM' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'UAT' and vms['storage'] == 'HITACHI' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'SIT' and vms['storage'] == 'IBM' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'SIT' and vms['storage'] == 'HITACHI' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'DR' and vms['storage'] == 'IBM' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{%   elif vms['environment'] == 'DR' and vms['storage'] == 'HITACHI' %}
+  dc                     = "KBT-DC"
+  network_cards          = ["KBT-DPG-VL32"]
+  ipv4 = {
+    "KBT-DPG-VL32" = ["{{ vms['IPAddress'] }}"]
+  }
+{% endif %}
+  ipv4submask            = ["{{ (vms['IPAddress'] + '/' + vms['Subnet'] ) | ipaddr('prefix') }}"]
+  vmdns                  = ["{{ vms['DNS'] }}"]
+  vmgateway              = "{{ vms['Gateway'] }}"
+  vmrp                   = "{{ vms['resourcepool'] }}"
+  vmfolder               = "{{ vms['folder'] }}"
+  disk_datastore         = "{{ vms['datastore'] }}"
+  cpu_number             = {{ vms['cpu'] }}
+  ram_size               = {{ vms['ram'] * 1024 }}
+  # cpu_hot_add_enabled    = "true"
+  # cpu_hot_remove_enabled = "true"
+  # memory_hot_add_enabled = "true"
+  vmdomain               = "somedomain.com"
+  vmnameliteral          = "{{ vms['hostname'] }}"
+  # data_disk_scsi_controller  = [0, 3]
+  # data_disk_datastore        = ["vsanDatastore", "nfsDatastore"]
+{%     if vms['drives'] is defined %}
+  data_disk_size_gb = [
+{%          for drives in vms['drives'] %}
+  {{ drives }}, 
+{%          endfor %}
+  ]
+{%     endif %}
+
+{%     if vms['drives'] is defined %}
+  thin_provisioned  = [
+{%          for drives in vms['drives'] %}
+{%            if loop.index == loop.length %}
+  "true"
+{%            else %}
+  "true",
+{%             endif %}
+{%          endfor %}
+  ]
+{%     endif %}
+{%      if vms['usagetype'] == 'Database Server'  %}
+  tags = {
+    "VM_Type"    = "DB"
+    }
+{%      elif vms['usagetype'] == 'Application Server' %}
+  tags = {
+    "VM_Type"    = "Application"
+    }
+{%      elif vms['usagetype'] == 'Web Server' %}
+  tags = {
+    "VM_Type"    = "WebServer"
+    }
+{%      endif   %}
+{%      if vms['operatingsystem'] == 'Windows' %}
+  scsi_type = "lsilogic-sas"
+  scsi_controller = 0
+  vmtemp            = "${var.windows_temp}"
+  enable_disk_uuid = "true"
+  auto_logon       = "true"
+  run_once         = ["powershell -Command echo 'Get-Disk | Where-Object PartitionStyle -eq RAW | Initialize-Disk -PartitionStyle GPT -PassThru | New-Partition -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -Confirm:$false' > C:\\format-mount.ps1",  "powershell -ExecutionPolicy Unrestricted -File C:\\format-mount.ps1 -Schedule"] 
+  # orgname          = "Terraform-Module"
+  # workgroup        = "terraform-Test"
+  is_windows_image = "true"
+  # windomain             = "Development.com"
+  # domain_admin_user     = "Domain admin user"
+  # domain_admin_password = "SomePassword"
+  firmware         = "efi"
+  local_adminpass  = "${var.windows_temp_passwd}"
+}
+{%      elif vms['operatingsystem'] == 'Linux' %}
+  vmtemp            = "${var.linux_temp}"
+ }
+resource "null_resource" "{{ vms['hostname'] }}" {
+  depends_on = [module.{{ vms['hostname'] }}]
+  provisioner "local-exec" {
+    command = "sleep 20 && ansible-playbook postprovisioning.yaml -i {{ vms['IPAddress'] }}, -e  'ansible_user=root ansible_password=${var.linux_temp_passwd} ansible_ssh_common_args=\"'\"-o StrictHostKeyChecking=no\"'\"' -vvv"
+    interpreter = ["/bin/bash", "-c"]
+  }
+ }
+{% endif %}
+{% endfor %}
+

@@ -1,0 +1,36 @@
+fileignoreconfig:
+- filename: smbc/terraform.tfstate.backup
+  checksum: 95f82dd8c373d7a76e4fe116db79f3eccb84673093fb838ed1f5c83053fe8cc5
+  ignore_detectors: []
+- filename: smbc/.terraform/plugins/linux_amd64/lock.json
+  checksum: bed31b1f5ab85e8cb0723ba2af9c21cae0f5be75126989c73b85db7b0f61849d
+  ignore_detectors: []
+- filename: smbc/postprovisioning.yaml
+  checksum: 06ba621b050bb5db1fcb46c6bcccb1759ffa1a5063d806395bbaa5db71570d89
+  ignore_detectors: []
+- filename: smbc/provider.tf
+  checksum: e11a07240b1e4a782698a9905c5d4786b4b2349ca24411baadcc2b51d3e9e1aa
+  ignore_detectors: []
+- filename: smbc/main.tf
+  checksum: 070d80794fc48bca404e956072137b588981eb49eba5299ee0a1a50e9e2c19c9
+  ignore_detectors: []
+- filename: smbc/tfgenerate/files/main.tf
+  checksum: ff9ab1ea81a1161aa067d464c444057a015a8b58725871145a42e4de4e393afa
+  ignore_detectors: []
+- filename: smbc/tfgenerate/templates/main.tf.j2
+  checksum: 06f1b772c18b4bbfc59d26e1527a286d9a52abc934026fe491b893cd622ad303
+  ignore_detectors: []
+- filename: terraform-vsphere-vm/main.tf
+  checksum: 98abb65d405690b6495dab800d6841856864d0324b139a285d4e95e9afb05ffe
+  ignore_detectors: []
+- filename: terraform-vsphere-vm/examples/windows/README.md
+  checksum: fa993ed422a002004299879def74a428bcedbb4c72f445830e8df67eb23e5459
+  ignore_detectors: []
+- filename: terraform-vsphere-vm/examples/windows/main.tf
+  checksum: c22731085ff6c0807519374f1f851a73949617c6f258e832c67abd5082aea199
+  ignore_detectors: []
+- filename: smbc/terraform.tfstate
+  checksum: ec188007ffd0388c06ec0a4a5ee0ae4f30ac9037754e3a590c9deb3da98c3d06
+  ignore_detectors: []
+scopeconfig: []
+
