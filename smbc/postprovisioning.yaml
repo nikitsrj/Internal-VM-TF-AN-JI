@@ -25,11 +25,11 @@
   - name: start docker service
     service: name=docker state=started
   
-  - name: Pull app image
-    command: docker pull nicksrj/nova
+#   - name: Pull app image
+#     command: docker pull nicksrj/nova
   
-  - name: Run docker container
-    command: docker run -itd -p 80:80 nicksrj/nova
+#   - name: Run docker container
+#     command: docker run -itd -p 80:80 nicksrj/nova
 
 
 #   - name: REDHAT SATELLITE REGISTRATION STEPS AT CLIENt SIDE
