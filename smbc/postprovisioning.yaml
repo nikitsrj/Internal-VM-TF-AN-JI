@@ -15,68 +15,11 @@
   - name: running the script of formating and mounting the disk
     shell: bash -x /opt/format-mount.sh
 
-  - name: Install Docker
-    yum: name=docker state=latest
-  - name: Install Python-pip
-    yum: name=python3-pip state=latest
-  - name: install docker-py
-    command: pip3 install docker-py
-
-  - name: start docker service
-    service: name=docker state=started
+  - name: REDHAT SATELLITE REGISTRATION STEPS AT CLIENt SIDE
+    command: subscription-manager register --username=satadmin --password=admin --environment=PROD/CV-RHEL7 -- baseurl=https://sngp1vlcprhs01.dapac.aspa.smbc.local/pulp/repos/; subscription-manager attach
   
-#   - name: Pull app image
-#     command: docker pull nicksrj/nova
-  
-#   - name: Run docker container
-#     command: docker run -itd -p 80:80 nicksrj/nova
+  - name: Run precheck, sysbackup scripts and apply patch to the server
+    yum: name=* state=latest
 
-
-#   - name: REDHAT SATELLITE REGISTRATION STEPS AT CLIENt SIDE
-#     command: subscription-manager register --username=satadmin --password=admin --environment=PROD/CV-RHEL7 -- baseurl=https://sngp1vlcprhs01.dapac.aspa.smbc.local/pulp/repos/; subscription-manager attach
-  
-#   - name: Run precheck, sysbackup scripts and apply patch to the server
-#     yum: name=* state=latest
-
-# #####Adding Server to Tenable.sc for scanning#############
-
-# - hosts: localhost
-#   sudo: yes
-#   vars: 
-#     ACCESSKEY=748a3e8a75934a44befe2eaf1ba42a6d
-#     SECRETKEY=2a6d5fb158b644a4b5a86f84d8af5492
-#   tasks:
-#   - name: ADD Asset data to Tenable.sc
-#     uri: 
-#       uri: https://tenableIP:Port/rest/asset
-#       method: POST
-#       body: "{{ lookup('file','add-asset.json') }}"
-#       body_format: json
-#       headers:
-#         Content-Type: "application/json"
-#         x-apikey: "accesskey={{ ACCESSKEY }}; secretkey={{ SECRETKEY }}"
-
-
-# ##########Retrive the asset id and necessary details############
-#   - name: Retrieve Asset data
-#     uri:
-#       uri: https://tenableIP:Port/rest/asset?name=<SYSTEMCODE>
-#       method: GET
-#       headers:
-#         Content-Type: "application/json"
-#         x-apikey: "accesskey={{ ACCESSKEY }}; secretkey={{ SECRETKEY }}"
-#     register: assetdata
-#   - debug: assetid=assetdata
-
-# ###########Scan the asset #############################
-
-#   - name: scanning the asset
-#     uri:
-#       uri: https://tenableIP:Port/rest/scan
-#       method: POST
-#       body: "{ "assets": [ "id": {{ assetdata.id }} ] }"
-#       headers:
-#         Content-Type: "application/json"
-#         x-apikey: "accesskey={{ ACCESSKEY }}; secretkey={{ SECRETKEY }}"
 
 
